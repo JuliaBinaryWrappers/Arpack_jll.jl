@@ -8,7 +8,7 @@ LIBPATH = ""
 LIBPATH_env = "DYLD_FALLBACK_LIBRARY_PATH"
 
 # Relative path to `libarpack`
-const libarpack_splitpath = ["lib", "libarpack.2.1.0.dylib"]
+const libarpack_splitpath = ["lib", "libarpack.2.0.0.dylib"]
 
 # This will be filled out by __init__() for all products, as it must be done at runtime
 libarpack_path = ""
@@ -25,14 +25,18 @@ const libarpack = "@rpath/libarpack.2.dylib"
 Open all libraries
 """
 function __init__()
-    global prefix = abspath(joinpath(@__DIR__, ".."))
+    global artifact_dir = abspath(artifact"Arpack")
 
     # Initialize PATH and LIBPATH environment variable listings
     global PATH_list, LIBPATH_list
-    append!.(Ref(PATH_list), (OpenBLAS_jll.PATH_list,))
-    append!.(Ref(LIBPATH_list), (OpenBLAS_jll.LIBPATH_list,))
+    # We first need to add to LIBPATH_list the libraries provided by Julia
+    append!(LIBPATH_list, [joinpath(Sys.BINDIR, Base.LIBDIR, "julia"), joinpath(Sys.BINDIR, Base.LIBDIR)])
+    # From the list of our dependencies, generate a tuple of all the PATH and LIBPATH lists,
+    # then append them to our own.
+    foreach(p -> append!(PATH_list, p), (OpenBLAS_jll.PATH_list,))
+    foreach(p -> append!(LIBPATH_list, p), (OpenBLAS_jll.LIBPATH_list,))
 
-    global libarpack_path = abspath(joinpath(artifact"Arpack", libarpack_splitpath...))
+    global libarpack_path = normpath(joinpath(artifact_dir, libarpack_splitpath...))
 
     # Manually `dlopen()` this right now so that future invocations
     # of `ccall` with its `SONAME` will find this path immediately.

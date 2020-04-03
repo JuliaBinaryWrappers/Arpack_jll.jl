@@ -30,7 +30,7 @@ function __init__()
     # Initialize PATH and LIBPATH environment variable listings
     global PATH_list, LIBPATH_list
     # We first need to add to LIBPATH_list the libraries provided by Julia
-    append!(LIBPATH_list, [joinpath(Sys.BINDIR, Base.LIBDIR, "julia"), joinpath(Sys.BINDIR, Base.LIBDIR)])
+    append!(LIBPATH_list, [Sys.BINDIR, joinpath(Sys.BINDIR, Base.LIBDIR, "julia"), joinpath(Sys.BINDIR, Base.LIBDIR)])
     # From the list of our dependencies, generate a tuple of all the PATH and LIBPATH lists,
     # then append them to our own.
     foreach(p -> append!(PATH_list, p), (OpenBLAS_jll.PATH_list,))

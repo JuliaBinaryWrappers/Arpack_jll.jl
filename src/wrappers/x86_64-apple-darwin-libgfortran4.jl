@@ -9,7 +9,7 @@ function __init__()
     JLLWrappers.@generate_init_header(OpenBLAS_jll, CompilerSupportLibraries_jll)
     JLLWrappers.@init_library_product(
         libarpack,
-        "lib/libarpack.2.1.0.dylib",
+        "lib/libarpack.2.0.0.dylib",
         RTLD_LAZY | RTLD_DEEPBIND,
     )
 

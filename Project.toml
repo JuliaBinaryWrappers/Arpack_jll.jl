@@ -1,6 +1,6 @@
 name = "Arpack_jll"
 uuid = "68821587-b530-5797-8361-c406ea357684"
-version = "3.7.0+1"
+version = "3.8.0+1"
 
 [deps]
 JLLWrappers = "692b3bcd-3c85-4b1f-b108-f13ce0eb3210"
